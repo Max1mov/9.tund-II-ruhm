@@ -44,8 +44,9 @@
 				$login_response = $User->loginUser($email, $password_hash);
 				
 				if(isset($login_response->success)){
-				
+				echo("<pre>");
 				var_dump($login_response);
+				echo("</pre>");
 				
 				
 				}
