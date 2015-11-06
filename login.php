@@ -43,18 +43,29 @@
 				// User klassi sees olev funktsioon
 				$login_response = $User->loginUser($email, $password_hash);
 				
+				//kasutaja on sisse logitud
 				if(isset($login_response->success)){
-				echo("<pre>");
-				var_dump($login_response);
-				echo("</pre>");
-				
-				
+					
+					//echo "<pre>";
+					//var_dump($login_response);
+					//echo "</pre>";
+					// läks edukalt, nüüd peaks kasutaja sessiooni salvestama
+					$_SESSION["id_from_db"] = $login_response->success->user->id;
+					$_SESSION["user_email"] = $login_response->success->user->email;
+					
+					header("Location: data.php");
+					
+					//******************************
+					//********* OLULINE ************
+					//******************************
+					
+					// lõpetame PHP laadimise
+					exit();
+					
+					
 				}
+				
 			}
-			
-			
-			
-			
 		} // login if end
     // *********************
     // ** LOO KASUTAJA *****
@@ -105,7 +116,7 @@
 <body>
 
   <h2>Log in</h2>
-  //LOGIN********************************
+  
   <?php if(isset($login_response->error)): ?>
   
 	<p style="color:red;">
@@ -120,7 +131,6 @@
   
   <?php endif; ?>  
   
-  //*LOGIN*****************************
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
   	<input name="email" type="email" placeholder="E-post" value="<?php echo $email; ?>"> <?php echo $email_error; ?><br><br>
   	<input name="password" type="password" placeholder="Parool" value="<?php echo $password; ?>"> <?php echo $password_error; ?><br><br>
